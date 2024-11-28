@@ -1,4 +1,5 @@
 import React from 'react';
+import DOMPurify from 'dompurify';
 import './ContentDisplay.css'
 
 interface ExtractedData {
@@ -15,10 +16,12 @@ interface ContentDisplayProps {
   }
 
   const ContentDisplay: React.FC<ContentDisplayProps> = ({ radioSelected, extractedData, pdfContent, handlePdfChange }) => {
-  return (
+    const sanitizedHtmlString = DOMPurify.sanitize(extractedData?.data)
+  
+    return (
     <div className='content-group'>
       {radioSelected === 'text' ? (
-        <div className='content'>{extractedData?.data}</div>
+        <div className='content' dangerouslySetInnerHTML={{ __html: sanitizedHtmlString }}></div>
       ) : (
         <textarea
           value={pdfContent}
