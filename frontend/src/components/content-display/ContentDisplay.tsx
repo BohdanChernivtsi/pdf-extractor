@@ -1,4 +1,5 @@
 import React from 'react';
+import './ContentDisplay.css'
 
 interface ExtractedData {
     data: string;
@@ -15,9 +16,9 @@ interface ContentDisplayProps {
 
   const ContentDisplay: React.FC<ContentDisplayProps> = ({ radioSelected, extractedData, pdfContent, handlePdfChange }) => {
   return (
-    <div>
+    <div className='content-group'>
       {radioSelected === 'text' ? (
-        <div>{extractedData?.data}</div>
+        <div className='content'>{extractedData?.data}</div>
       ) : (
         <textarea
           value={pdfContent}

@@ -21,7 +21,7 @@ const FileUpload: React.FC<FileUploadAndRadioButtonsProps> = ({
         onChange={handleFileChange} 
       />
 
-      <FormControl>
+      <FormControl className='radio-buttons'>
         <FormLabel className='demo-radio-buttons-group-label' id="demo-radio-buttons-group-label">
           Select how to extract data:
         </FormLabel>
