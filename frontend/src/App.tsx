@@ -10,6 +10,7 @@ import { extractPdf } from './redux/async-thunk';
 import { IExtractedDataSlice } from './redux/extracted-data.slice';
 import { useEffect, useState } from 'react';
 import { Button } from '@mui/material';
+import ContentDisplay from './components/ContentDisplay';
 
 function App() {
   const [file, setFile] = useState<any>(null);
@@ -62,14 +63,12 @@ function App() {
         
         <Button variant="contained" disabled={!file} onClick={extractDataHandler} className='extract-button'>Extract data</Button>
 
-        { radioSelected == 'text' ?
-        extractedData.data
-        : <textarea value={pdfContent} onChange={handlePdfChange} rows={30} cols={50} className='extract-textArea'/>
-        }
-
-        { extractedData?.isLoading && <b>Loading...</b> }
-        
-        <div>{extractedData.isError && <p>Error happened</p> }</div>
+        <ContentDisplay
+          radioSelected={radioSelected}
+          extractedData={extractedData}
+          pdfContent={pdfContent}
+          handlePdfChange={handlePdfChange}
+        />
 
       </header>
     </div>
