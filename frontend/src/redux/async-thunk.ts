@@ -1,26 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios'
 
-// export const extractPdf = createAsyncThunk<string, void>("fetchTodos", async () => {
-//     return 'asd'
-    
-//     const response = await axios.get('localhost:3001/extract-pdf')
-//     .then((response) => {
-//         return response
-//     });
-//     return response.data;
-//   },
-    // axios.post('localhost:3001/extract-pdf', {
-    //     pdfData: pdfData,
-    //   })
-    //   .then(function (response) {
-    //     return response;
-    //   })
-    //   .catch(function (error) {
-    //     console.log(error);
-    //   });
-//  );
-
 export const extractPdf = createAsyncThunk<string, File>(
     'pdf/extract', 
     async (file: File) => {
