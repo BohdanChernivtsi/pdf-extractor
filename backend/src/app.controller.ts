@@ -28,6 +28,8 @@ export class AppController {
     console.log('Raw request body:', JSON.stringify(body));
     console.log('Received file:', file);
 
-    return this.appService.formatData(body.formData);
+    const content = await this.appService.processFileContent(file);
+
+    return content;
   }
 }

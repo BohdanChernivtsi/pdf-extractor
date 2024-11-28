@@ -11,18 +11,18 @@ import { IExtractedDataSlice } from './redux/extracted-data.slice';
 import { useState } from 'react';
 
 function App() {
-  const [file, setFile] = useState<File | null>(null);
+  const [file, setFile] = useState<any>(null);
   const [radioSelected, setRadioSelected] = React.useState('text');
   const extractedData = useSelector((state: { extractedData: IExtractedDataSlice} ) => state.extractedData)
   const dispatch = useDispatch()
 
   const extractDataHandler = () => {
-    dispatch(extractPdf(file as File) as any)
+    dispatch(extractPdf(file) as any)
   }
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
-      setFile(e.target.files[0]);
+      setFile(e);
     }
   };
 
