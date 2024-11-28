@@ -9,6 +9,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { extractPdf } from './redux/async-thunk';
 import { IExtractedDataSlice } from './redux/extracted-data.slice';
 import { useEffect, useState } from 'react';
+import { Button } from '@mui/material';
 
 function App() {
   const [file, setFile] = useState<any>(null);
@@ -46,7 +47,7 @@ function App() {
       <header className="App-header">
         <input type="file" accept=".pdf" onChange={handleFileChange} />
         <FormControl>
-          <FormLabel id="demo-radio-buttons-group-label">Select how to extract data:</FormLabel>
+          <FormLabel className='demo-radio-buttons-group-label' id="demo-radio-buttons-group-label">Select how to extract data:</FormLabel>
           <RadioGroup
             aria-labelledby="demo-radio-buttons-group-label"
             defaultValue="text"
@@ -58,7 +59,9 @@ function App() {
             <FormControlLabel value="textArea" control={<Radio />} label="TextArea" />
           </RadioGroup>
         </FormControl>
-        <button disabled={!file} onClick={extractDataHandler}>Extract data</button>
+        
+        <Button variant="contained" disabled={!file} onClick={extractDataHandler}>Extract data</Button>
+
         { radioSelected == 'text' ?
         extractedData.data
         : <textarea value={pdfContent} onChange={handlePdfChange} rows={30} cols={50}/>
