@@ -60,11 +60,11 @@ function App() {
           </RadioGroup>
         </FormControl>
         
-        <Button variant="contained" disabled={!file} onClick={extractDataHandler}>Extract data</Button>
+        <Button variant="contained" disabled={!file} onClick={extractDataHandler} className='extract-button'>Extract data</Button>
 
         { radioSelected == 'text' ?
         extractedData.data
-        : <textarea value={pdfContent} onChange={handlePdfChange} rows={30} cols={50}/>
+        : <textarea value={pdfContent} onChange={handlePdfChange} rows={30} cols={50} className='extract-textArea'/>
         }
 
         { extractedData?.isLoading && <b>Loading...</b> }

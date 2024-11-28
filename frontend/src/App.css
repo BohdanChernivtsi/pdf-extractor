@@ -18,6 +18,14 @@
   margin-top: 10px;
 }
 
+.extract-button {
+  margin-bottom: 10px;
+}
+
+.extract-textArea {
+  margin-top: 20px;
+}
+
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
