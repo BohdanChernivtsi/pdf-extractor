@@ -8,10 +8,11 @@ import './App.css';
 import { useSelector, useDispatch } from 'react-redux'
 import { extractPdf } from './redux/async-thunk';
 import { IExtractedDataSlice } from './redux/extracted-data.slice';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 function App() {
   const [file, setFile] = useState<any>(null);
+  const [pdfContent, setPdfContent] = useState<any>('');
   const [radioSelected, setRadioSelected] = React.useState('text');
   const extractedData = useSelector((state: { extractedData: IExtractedDataSlice} ) => state.extractedData)
   const dispatch = useDispatch()
@@ -29,6 +30,16 @@ function App() {
   const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setRadioSelected((event.target as HTMLInputElement).value);
   };
+
+  const handlePdfChange = (event: any) => {
+    
+  };
+
+  useEffect(() => {
+    if (extractedData && !extractedData.isError) {
+      setPdfContent(extractedData.data)
+    }
+  }, [extractedData]);
 
   return (
     <div className="App">
@@ -50,7 +61,7 @@ function App() {
         <button disabled={!file} onClick={extractDataHandler}>Extract data</button>
         { radioSelected == 'text' ?
         extractedData.data
-        : <textarea name="postContent" value={extractedData.data}/>
+        : <textarea value={pdfContent} onChange={handlePdfChange} rows={30} cols={50}/>
         }
 
         { extractedData?.isLoading && <b>Loading...</b> }

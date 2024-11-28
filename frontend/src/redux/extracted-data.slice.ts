@@ -25,7 +25,8 @@ const extractedDataSlice = createSlice({
       state.isLoading = true;
      })
      builder.addCase(extractPdf.fulfilled, (state, action: ReduxAction<string, string>) => {
-        console.log('BOhdna', action.payload)
+    
+      console.log(action.payload)
       state.isLoading = false;
       state.data = action.payload;
      })
