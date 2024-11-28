@@ -1,2 +1,7 @@
-/dist
-/node_modules
+/backend/dist
+/backend/node_modules/
+
+/backend/uploads
+
+/frontend/dist/
+/frontend/node_modules
