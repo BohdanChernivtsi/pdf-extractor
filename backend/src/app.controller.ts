@@ -12,20 +12,8 @@ export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Post('upload')
-  @UseInterceptors(FileInterceptor('file', {
-    storage: diskStorage({
-      destination: './uploads',
-      filename: (req, file, cb) => {
-        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-        cb(null, file.fieldname + '-' + uniqueSuffix + path.extname(file.originalname));
-      }
-    })
-  }))
-  async uploadFile(
-    @UploadedFile() file: Express.Multer.File,
-    @Body() body: any
-  ) {
-    console.log('Raw request body:', JSON.stringify(body));
+  @UseInterceptors(FileInterceptor('file'))
+  async uploadFile(@UploadedFile() file: Express.Multer.File) {
     console.log('Received file:', file);
 
     const content = await this.appService.processFileContent(file);

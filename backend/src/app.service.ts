@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import * as path from 'path';
+import * as fs from 'fs';
 import * as crypto from 'crypto';
+import * as pdfParser from 'pdf-parse';
 import { FileValidationException } from './exceptions/file-validation-exception';
 
 @Injectable()
@@ -21,24 +23,36 @@ export class AppService {
   }
 
   async processFileContent(file: Express.Multer.File): Promise<any> {
-    // Access the file buffer (raw content of the file)
-    const fileBuffer = file.buffer;
-    const fileContent = fileBuffer.toString();
+    if (!file || !file.path) {
+      throw new Error('File path is missing');
+    }
 
-    let parsedContent: any;
-    try {
-      parsedContent = JSON.parse(fileContent);
-    } catch (err) {
-      parsedContent = null;
+    const filePath = path.resolve(__dirname, '..', file.path);
+    
+    const fileBuffer = fs.readFileSync(filePath);
+
+    console.log('File content buffer:', fileBuffer);
+
+    let parsedContent = ''
+
+    if (file.mimetype === 'application/pdf') {
+      try {
+        const pdfData = await pdfParser(fileBuffer);
+        console.log('PDF Content:', pdfData.text);
+        parsedContent = pdfData.text
+      } catch (error) {
+        console.error('Error parsing PDF:', error);
+        return { error: 'Failed to parse PDF file' };
+      }
     }
 
     console.log({
       originalName: file.originalname,
       mimeType: file.mimetype,
       size: file.size,
-      content: parsedContent || fileContent,  // Can return the parsed content or raw text
+      content: parsedContent
     });
-    return parsedContent || fileContent
+    return parsedContent
   }
 
   private generateFileName(extension: string): string {
