@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { PdfProcessingController } from '../controllers/pdf-processing.controller';
+import { FileProcessingService } from '../services/file-processing.service';
 import { MulterModule } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import * as path from 'path';
@@ -20,7 +20,7 @@ import * as path from 'path';
       }
     })
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [PdfProcessingController],
+  providers: [FileProcessingService],
 })
 export class AppModule {}

@@ -3,10 +3,10 @@ import * as path from 'path';
 import * as fs from 'fs';
 import * as crypto from 'crypto';
 import * as pdfParser from 'pdf-parse';
-import { FileValidationException } from './exceptions/file-validation-exception';
+import { FileValidationException } from '../exceptions/file-validation-exception';
 
 @Injectable()
-export class AppService {
+export class FileProcessingService {
   formatData(formData): string {
     return formData;
   }

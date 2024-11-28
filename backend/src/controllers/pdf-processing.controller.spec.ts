@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { PdfProcessingController } from './pdf-processing.controller';
+import { FileProcessingService } from '../services/file-processing.service';
 import * as supertest from 'supertest';
 import { INestApplication } from '@nestjs/common';
 import { ExpressAdapter } from '@nestjs/platform-express';
@@ -8,23 +8,23 @@ import * as express from 'express';
 import { MulterModule } from '@nestjs/platform-express';
 import { FileInterceptor } from '@nestjs/platform-express';
 
-// Mock the AppService
+// Mock the FileProcessingService
 jest.mock('./app.service');
 
-describe('AppController (e2e)', () => {
+describe('PdfProcessingController (e2e)', () => {
   let app: INestApplication;
-  let appService: AppService;
+  let fileProcessingService: FileProcessingService;
 
   beforeAll(async () => {
-    // Mocking the AppService methods
+    // Mocking the FileProcessingService methods
     const appModule: TestingModule = await Test.createTestingModule({
       imports: [MulterModule.register({
         dest: './uploads',  // Destination folder for uploaded files (this is a mock, so it doesn't need to exist)
       })],
-      controllers: [AppController],
+      controllers: [PdfProcessingController],
       providers: [
         {
-          provide: AppService,
+          provide: FileProcessingService,
           useValue: {
             processFileContent: jest.fn().mockResolvedValue({ message: 'File processed' }),  // Mock response from the service
           },
@@ -35,7 +35,7 @@ describe('AppController (e2e)', () => {
     app = appModule.createNestApplication(new ExpressAdapter(express()));
     await app.init();
 
-    appService = appModule.get<AppService>(AppService); // Get the mocked service instance
+    fileProcessingService = appModule.get<FileProcessingService>(FileProcessingService); // Get the mocked service instance
   });
 
   it('should upload a file and return processed content', async () => {
@@ -49,7 +49,7 @@ describe('AppController (e2e)', () => {
     expect(response.body).toEqual({ message: 'File processed' });
 
     // Verify that the service method was called
-    expect(appService.processFileContent).toHaveBeenCalledWith(expect.objectContaining({
+    expect(fileProcessingService.processFileContent).toHaveBeenCalledWith(expect.objectContaining({
       fieldname: 'file',
       originalname: 'dummy.pdf',
       encoding: '7bit',
