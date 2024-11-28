@@ -8,34 +8,54 @@ import './App.css';
 import { useSelector, useDispatch } from 'react-redux'
 import { extractPdf } from './redux/async-thunk';
 import { IExtractedDataSlice } from './redux/extracted-data.slice';
+import { useState } from 'react';
 
 function App() {
+  const [file, setFile] = useState<File | null>(null);
+  const [radioSelected, setRadioSelected] = React.useState('text');
   const extractedData = useSelector((state: { extractedData: IExtractedDataSlice} ) => state.extractedData)
   const dispatch = useDispatch()
 
   const extractDataHandler = () => {
-    const data = null
-    dispatch(extractPdf() as any)
+    dispatch(extractPdf(file as File) as any)
   }
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      setFile(e.target.files[0]);
+    }
+  };
+
+  const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setRadioSelected((event.target as HTMLInputElement).value);
+  };
 
   return (
     <div className="App">
       <header className="App-header">
-        <input type="file" id="avatar" name="avatar" accept="application/pdf" />
+        <input type="file" accept=".pdf" onChange={handleFileChange} />
         <FormControl>
           <FormLabel id="demo-radio-buttons-group-label">Select how to extract data:</FormLabel>
           <RadioGroup
             aria-labelledby="demo-radio-buttons-group-label"
             defaultValue="text"
             name="radio-buttons-group"
+            value={radioSelected}
+            onChange={handleRadioChange}
           >
             <FormControlLabel value="text" control={<Radio />} label="Text" />
             <FormControlLabel value="textArea" control={<Radio />} label="TextArea" />
           </RadioGroup>
         </FormControl>
-        <button onClick={extractDataHandler}>Extract data</button>
-        {extractedData?.isLoading && <><b>Loading...</b></>}
-        <div>{extractedData.isError ? <p>Error happened</p> : extractedData.data}</div>
+        <button disabled={!file} onClick={extractDataHandler}>Extract data</button>
+        { radioSelected == 'text' ?
+        extractedData.data
+        : <textarea name="postContent" value={extractedData.data}/>
+        }
+
+        { extractedData?.isLoading && <b>Loading...</b> }
+        
+        <div>{extractedData.isError && <p>Error happened</p> }</div>
 
       </header>
     </div>

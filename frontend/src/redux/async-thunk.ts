@@ -21,11 +21,22 @@ import axios from 'axios'
     //   });
 //  );
 
-export const extractPdf = createAsyncThunk<string, void>(
+export const extractPdf = createAsyncThunk<string, File>(
     'pdf/extract', 
-    async () => {
+    async (file: File) => {
       try {
-        const response = await axios.get('http://localhost:3001/extract-pdf');
+        console.log(file)
+        const formData = new FormData();
+        formData.append('file', file, file.name);
+
+        console.log(formData)
+        const response = await axios.post('http://localhost:3001/extract-pdf/upload', {
+            formData
+        }, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        });
         console.log(response)
         return response.data;
       } catch (error) {
