@@ -4,14 +4,14 @@ import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('extract-pdf')
 export class PdfProcessingController {
-  constructor(private readonly FileProcessingService: FileProcessingService) {}
+  constructor(private readonly fileProcessingService: FileProcessingService) {}
 
   @Post('upload')
   @UseInterceptors(FileInterceptor('file'))
   async uploadFile(@UploadedFile() file: Express.Multer.File) {
     console.log('Received file:', file);
 
-    const content = await this.FileProcessingService.processFileContent(file);
+    const content = await this.fileProcessingService.processFileContent(file);
 
     return content;
   }

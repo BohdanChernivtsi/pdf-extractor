@@ -27,7 +27,7 @@ export class FileProcessingService {
       throw new Error('File path is missing');
     }
 
-    const filePath = path.resolve(__dirname, '..', file.path);
+    const filePath = path.resolve(__dirname, '../..', file.path);
     
     const fileBuffer = fs.readFileSync(filePath);
 
